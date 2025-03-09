@@ -1,0 +1,7 @@
+# .gitignore 
+*~
+*back
+
+# nix 
+/result 
+/result-*
