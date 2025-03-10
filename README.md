@@ -3,6 +3,12 @@
 Centralized [treefmt](https://github.com/numtide/treefmt-nix) configuration repo
 for my flakes/projects.
 
+## Documentation
+
+- [treefmt-nix repo](https://github.com/numtide/treefmt-nix)
+- [treefmt-nix website](https://treefmt.com/latest/)
+- [treefmt formatter configurations](https://treefmt.com/formatters/)
+
 ## Usage
 
 This project can be used as a standalone formatter for in a flake via `nix fmt`.
