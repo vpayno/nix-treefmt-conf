@@ -10,6 +10,7 @@
     deno.enable = true; # markdown
     jsonfmt.enable = true; # json
     nixfmt.enable = true; # nixfmt-rfc-style is now the default for the 'nix fmt' formatter
+    rustfmt.enable = true; # rust
     taplo.enable = true; # toml
   };
 
