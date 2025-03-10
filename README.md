@@ -112,3 +112,40 @@ fi
 
 true >/tmp/true.txt
 ```
+
+This is an example of `shellcheck` finding errors in `treefmt.nix`:
+
+```text
+$ nix flake check
+error: builder for '/nix/store/6a25mxwc5jl5jhr1hd4p2wwmwp4y7j4i-pyfmt.drv' failed with exit code 1;
+       last 25 log lines:
+       > Did you mean:
+       > isort "$isort_args" "$@"
+       >
+       >
+       > In /nix/store/cvyl68b69s9927m84vwhgnlqpjff8c3l-pyfmt/bin/pyfmt line 13:
+       > black_args="--line-length=240"
+       > ^--------^ SC2034 (warning): black_args appears unused. Verify use (or export if used externally).
+       >
+       >
+       > In /nix/store/cvyl68b69s9927m84vwhgnlqpjff8c3l-pyfmt/bin/pyfmt line 16:
+       > printf "Running %s\n" "ruff $ruff_args $@"
+       >                                        ^-- SC2145 (error): Argument mixes string and array. Use * or separate argument.
+       >
+       >
+       > In /nix/store/cvyl68b69s9927m84vwhgnlqpjff8c3l-pyfmt/bin/pyfmt line 17:
+       > ruff $ruff_args "$@"
+       >      ^--------^ SC2086 (info): Double quote to prevent globbing and word splitting.
+       >
+       > Did you mean:
+       > ruff "$ruff_args" "$@"
+       >
+       > For more information:
+       >   https://www.shellcheck.net/wiki/SC2145 -- Argument mixes string and array. ...
+       >   https://www.shellcheck.net/wiki/SC2034 -- black_args appears unused. Verify...
+       >   https://www.shellcheck.net/wiki/SC2086 -- Double quote to prevent globbing ...
+       For full logs, run 'nix log /nix/store/6a25mxwc5jl5jhr1hd4p2wwmwp4y7j4i-pyfmt.drv'.
+error: 1 dependencies of derivation '/nix/store/ahqwp7ralhy0s0aw3zyqgz22aasm12nw-treefmt.toml.drv' failed to build
+error: 1 dependencies of derivation '/nix/store/9xy3i55xm789kni8ig1y7x5rfabkywqy-treefmt.drv' failed to build
+error: 1 dependencies of derivation '/nix/store/wps3282zl52g1dqp5yi47srczvcsacws-treefmt-check.drv' failed to build
+```
