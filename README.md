@@ -67,3 +67,48 @@ diff --git a/flake.nix b/flake.nix
      # Package a virtual environment as our main application.
      #
 ```
+
+## Linting
+
+### shellcheck
+
+`treefmt` can also use linters before formatting and fail when lint errors are
+detected.
+
+This example shows `shellcheck` failing `nix fmt` after lint errors are
+detected.
+
+```text
+$ nix run ~/git_vpayno/nix-treefmt-conf?ref=fmt-conf-shell; cat test.sh
+2025/03/10 08:49:22 INFO using config file: /nix/store/bcf68bh38y7gdp3cxpgbl3g8q5pn70sv-treefmt.toml
+ERRO formatter | shellcheck: failed to apply with options '[]': exit status 1
+
+
+In test.sh line 5:
+echo $one
+     ^--^ SC2086 (info): Double quote to prevent globbing and word splitting.
+
+Did you mean:
+echo "$one"
+
+For more information:
+  https://www.shellcheck.net/wiki/SC2086 -- Double quote to prevent globbing ...
+
+traversed 8 files
+emitted 5 files for processing
+formatted 0 files (1 changed) in 42ms
+Error: formatting failures detected
+#!/usr/bin/env bash
+
+one="1 7"
+
+echo $one
+
+if true; then # one
+  true        # two
+else
+  false
+fi
+
+true >/tmp/true.txt
+```
