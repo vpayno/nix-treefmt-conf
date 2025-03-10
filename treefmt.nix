@@ -6,9 +6,10 @@
 
   # Enable the nix formatter
   programs = {
-    nixfmt.enable = true; # nixfmt-rfc-style is now the default for the 'nixfmt' formatter
+    alejandra.enable = false; # using nixfmt
     deno.enable = true; # markdown
     jsonfmt.enable = true; # json
+    nixfmt.enable = true; # nixfmt-rfc-style is now the default for the 'nix fmt' formatter
     taplo.enable = true; # toml
   };
 
