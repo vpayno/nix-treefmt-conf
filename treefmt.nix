@@ -11,6 +11,7 @@
   programs = {
     alejandra.enable = false; # using nixfmt
     black.enable = false; # using ruff-format in pyfmt
+    cmake-format.enable = true; # cmake
     deno.enable = true; # markdown
     goimports.enable = false; # in goformatter wrapper
     gofumpt.enable = false; # in goformatter wrapper
