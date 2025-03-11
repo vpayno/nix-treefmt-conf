@@ -18,6 +18,7 @@
     isort.enable = false; # in pyfmt wrapper
     jsonfmt.enable = true; # json
     nixfmt.enable = true; # nixfmt-rfc-style is now the default for the 'nix fmt' formatter
+    ruff-check.enable = true; # python linter
     ruff-format.enable = false; # in pyfmt
     rustfmt.enable = true; # rust
     shellcheck.enable = true; # shell
