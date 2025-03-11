@@ -10,7 +10,7 @@
   # Enable the nix formatter
   programs = {
     alejandra.enable = false; # using nixfmt
-    black.enable = false; # using isort + ruff-format
+    black.enable = false; # using ruff-format in pyfmt
     deno.enable = true; # markdown
     goimports.enable = false; # in goformatter wrapper
     gofumpt.enable = false; # in goformatter wrapper
@@ -18,7 +18,7 @@
     isort.enable = false; # in pyfmt wrapper
     jsonfmt.enable = true; # json
     nixfmt.enable = true; # nixfmt-rfc-style is now the default for the 'nix fmt' formatter
-    ruff-format.enable = true; # isort + ruff-format
+    ruff-format.enable = false; # in pyfmt
     rustfmt.enable = true; # rust
     shellcheck.enable = true; # shell
     shfmt = {
@@ -76,10 +76,8 @@
           "devbox.json"
         ];
       };
-      ruff-format = {
+      pyfmt = {
         args = [
-          "format"
-          "--line-length=240"
         ];
         command = pkgs.writeShellApplication {
           name = "pyfmt";
@@ -94,11 +92,16 @@
             isort $isort_args "$@"
             printf "\n"
 
-            printf "Running %s\n" "ruff $*"
-            ruff "$@"
+            ruff_args="--line-length=240"
+            printf "Running %s\n" "ruff format $ruff_args $*"
+            ruff format $ruff_args "$@"
             printf "\n"
           '';
         };
+        includes = [
+          "*.py"
+          "*.pyi"
+        ];
       };
       shfmt = {
         args = [
