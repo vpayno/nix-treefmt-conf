@@ -12,6 +12,7 @@
     alejandra.enable = false; # using nixfmt
     black.enable = false; # using isort + ruff-format
     deno.enable = true; # markdown
+    isort.enable = false; # in pyfmt wrapper
     jsonfmt.enable = true; # json
     nixfmt.enable = true; # nixfmt-rfc-style is now the default for the 'nix fmt' formatter
     ruff-format.enable = true; # isort + ruff-format
