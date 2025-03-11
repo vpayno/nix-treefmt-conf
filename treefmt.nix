@@ -12,6 +12,9 @@
     alejandra.enable = false; # using nixfmt
     black.enable = false; # using isort + ruff-format
     deno.enable = true; # markdown
+    goimports.enable = false; # in goformatter wrapper
+    gofumpt.enable = false; # in goformatter wrapper
+    gofmt.enable = false; # in goformatter wrapper
     isort.enable = false; # in pyfmt wrapper
     jsonfmt.enable = true; # json
     nixfmt.enable = true; # nixfmt-rfc-style is now the default for the 'nix fmt' formatter
@@ -32,6 +35,42 @@
       ];
     };
     formatter = {
+      goformatter = {
+        args = [
+          "-w"
+        ];
+        command = pkgs.writeShellApplication {
+          name = "goformatter";
+          runtimeInputs = with pkgs; [
+            goimports-reviser
+            golines
+            gofumpt
+          ];
+          text = ''
+            printf "Running %s\n" "gofmt $*"
+            ${pkgs.go}/bin/gofmt "$@"
+            printf "\n"
+
+            printf "Running %s\n" "goimports-reviser $*"
+            goimports-reviser "$@"
+            printf "\n"
+
+            printf "Running %s\n" "golines $*"
+            golines "$@"
+            printf "\n"
+
+            printf "Running %s\n" "gofumpt $*"
+            gofumpt "$@"
+            printf "\n"
+          '';
+        };
+        includes = [
+          "*.go"
+        ];
+        excludes = [
+          "vedor/*"
+        ];
+      };
       jsonfmt = {
         excludes = [
           "devbox.json"
