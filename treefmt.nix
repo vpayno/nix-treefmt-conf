@@ -72,6 +72,27 @@
           "vedor/*"
         ];
       };
+      gomodtidy = {
+        args = [
+        ];
+        command = pkgs.writeShellApplication {
+          name = "go-mod-tidy";
+          runtimeInputs = with pkgs; [
+            go
+          ];
+          text = ''
+            printf "Running %s\n" "go mod tidy"
+            go mod tidy
+            printf "\n"
+          '';
+        };
+        includes = [
+          "*go.mod"
+          "*go.sum"
+          "*go.work"
+          "*go.work.sum"
+        ];
+      };
       jsonfmt = {
         excludes = [
           "devbox.json"
