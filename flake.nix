@@ -21,7 +21,7 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        version = "v0.1.5";
+        version = "v0.2.0";
 
         pkgs = nixpkgs.legacyPackages.${system};
 
