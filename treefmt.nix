@@ -9,6 +9,7 @@
 
   # Enable the nix formatter
   programs = {
+    actionlint.enable = true; # github workflows
     alejandra.enable = false; # using nixfmt
     black.enable = false; # using ruff-format in pyfmt
     cmake-format.enable = true; # cmake
