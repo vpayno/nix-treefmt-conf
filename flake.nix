@@ -155,6 +155,9 @@
                   exit 1
                 fi
 
+                declare last_version
+                last_version="$(git tag --list -n0 | sort -V | tail -n 1)"
+
                 printf "\n"
                 printf " Tag: %s\n" "$version"
                 printf "Note: %s\n" "$note"
@@ -167,10 +170,17 @@
                 git add ./flake.nix
                 printf "\n"
 
-                git commit -m "release $version: $note"
+                git-cliff --tag="$version" --output=CHANGELOG.md
+                git add ./CHANGELOG.md
                 printf "\n"
 
-                git tag -a -m "release $version: $note" "$version"
+                git commit -m "release($version): $note
+
+                $(git-cliff "$last_version".. --tag "$version")
+                "
+                printf "\n"
+
+                git tag -a -m "release($version): $note" "$version"
                 printf "\n"
 
                 git show "$version"
