@@ -149,3 +149,58 @@ error: 1 dependencies of derivation '/nix/store/ahqwp7ralhy0s0aw3zyqgz22aasm12nw
 error: 1 dependencies of derivation '/nix/store/9xy3i55xm789kni8ig1y7x5rfabkywqy-treefmt.drv' failed to build
 error: 1 dependencies of derivation '/nix/store/wps3282zl52g1dqp5yi47srczvcsacws-treefmt-check.drv' failed to build
 ```
+
+## Releases
+
+This flake includes a `tag-release` script used to bump the version in
+`flake.nix` and create the tag.
+
+To run it type: `nix run .#tag-release -- v1.2.3 "fix blah blah"`
+
+Example output:
+
+```bash
+$ nix run .#tag-release -- v1.2.3 "fix blah blah"
+nix run github:vpayno/nix-treefmt-conf?ref=tr-app#tag-release v1.2.3 "fix blah blah"
+
+ Tag: v1.2.3
+Note: fix blah blah
+
+
+
+[main 597a5a8] release v1.2.3: fix blah blah
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+
+tag v1.2.3
+Tagger: Victor Payno <vpayno@users.noreply.github.com>
+Date:   Tue Mar 11 22:10:03 2025 -0700
+
+release v1.2.3: fix blah blah
+
+commit 597a5a86edd1793139ca618f2ee5a0e6fe16f8e2 (HEAD -> main, tag: v1.2.3)
+Author: Victor Payno <vpayno@users.noreply.github.com>
+Date:   Tue Mar 11 22:10:03 2025 -0700
+
+    release v1.2.3: fix blah blah
+
+diff --git a/flake.nix b/flake.nix
+index 9e552cb..dfc5845 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -21,7 +21,7 @@
+     flake-utils.lib.eachDefaultSystem (
+       system:
+       let
+-        version = "v0.1.5";
++        version = "v1.2.3";
+
+         pkgs = nixpkgs.legacyPackages.${system};
+
+
+ Push tag v1.2.3?
+
+    Yes        No
+
+←→ toggle • enter submit • y Yes • n No
+```
