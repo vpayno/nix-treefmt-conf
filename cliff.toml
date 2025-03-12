@@ -62,7 +62,7 @@ commit_preprocessors = [
 commit_parsers = [
   { message = "^feat", group = "<!-- 0 --> Features" },
   { message = "^fix", group = "<!-- 1 --> Bug Fixes" },
-  { message = "^doc", group = "<!-- 3 --> Documentation" },
+  { message = "^docs?", group = "<!-- 3 --> Documentation" },
   { message = "^perf", group = "<!-- 4 --> Performance" },
   { message = "^refactor", group = "<!-- 2 --> Refactor" },
   { message = "^style", group = "<!-- 5 --> Styling" },
@@ -74,7 +74,10 @@ commit_parsers = [
   { message = "^chore|^ci", group = "<!-- 7 --> Miscellaneous Tasks" },
   { body = ".*security", group = "<!-- 8 --> Security" },
   { message = "^revert", group = "<!-- 9 --> Revert" },
-  { message = ".*", group = "<!-- 10 --> Other" },
+  { message = "^nix", group = "<!-- 10 --> Nix" },
+  { message = "^treefmt", group = "<!-- 11 --> Treefmt" },
+  { message = "^conf", group = "<!-- 12 --> Configs" },
+  { message = ".*", group = "<!-- 13 --> Other" },
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = false
