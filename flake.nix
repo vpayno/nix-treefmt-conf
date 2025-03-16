@@ -97,7 +97,10 @@
             pkgs.writeShellApplication {
               name = "tag-release";
               runtimeInputs = with pkgs; [
+                coreutils
                 git
+                git-cliff
+                gnugrep
                 gnused
                 gum
               ];
