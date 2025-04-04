@@ -25,10 +25,6 @@ All notable changes to this project will be documented in this file.
 
 - Add missing deps for tag-release
 
-### Other
-
-- *(v0.3.1)* Add missing tag-release runtime dependencies
-
 ## [0.3.0] - 2025-03-13
 
 ### Nix
@@ -40,10 +36,6 @@ All notable changes to this project will be documented in this file.
 - Add initial git-cliff config
 - Remove emoji from git-cliff config
 - Add commit categories used in project to git-cliff config
-
-### Other
-
-- *(v0.3.0)* Add changelog support to tag-release
 
 ## [0.2.2] - 2025-03-12
 
