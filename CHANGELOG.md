@@ -2,11 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.2] - 2025-04-04
+
+### Nix
+
+- Update locks
+- Update locks
+- Metadata updates
+
+### Treefmt
+
+- Switch from shfmt to shellfmt
+- Change python line limit to 120
+
+### Miscellaneous Tasks
+
+- *(style)* Clean up .gitignore file
+
 ## [0.3.1] - 2025-03-16
 
 ### Nix
 
 - Add missing deps for tag-release
+
+### Other
+
+- *(v0.3.1)* Add missing tag-release runtime dependencies
 
 ## [0.3.0] - 2025-03-13
 

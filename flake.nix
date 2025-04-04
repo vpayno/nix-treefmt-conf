@@ -22,7 +22,7 @@
       system:
       let
         pname = "nix-treefmt-conf";
-        version = "v0.3.1";
+        version = "v0.3.2";
         name = "${pname}-${version}";
 
         pkgs = nixpkgs.legacyPackages.${system};
