@@ -21,7 +21,9 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
+        pname = "nix-treefmt-conf";
         version = "v0.3.1";
+        name = "${pname}-${version}";
 
         pkgs = nixpkgs.legacyPackages.${system};
 
@@ -48,6 +50,8 @@
 
         metadata = {
           meta = {
+            inherit pname version name;
+
             homepage = "https://github.com/vpayno/nix-treefmt-conf";
             description = "Centralized treefmt configuration repo for my flakes/projects";
             platforms = pkgs.lib.platforms.linux;
@@ -81,10 +85,7 @@
         packages = rec {
           fmt =
             formatter
-            // {
-              inherit version;
-            }
-            // metadata
+            // metadata.meta
             // {
               meta = {
                 mainProgram = "treefmt";
@@ -201,12 +202,11 @@
                 fi
               '';
             }
-            // {
-              inherit version;
-            }
-            // metadata
+            // metadata.meta
             // {
               meta = {
+                pname = "tag-release";
+                name = "${name}-${version}";
                 mainProgram = "tag-release";
               };
             };
@@ -216,14 +216,18 @@
           fmt = {
             type = "app";
             program = "${pkgs.lib.getExe packages.default}";
-            meta = metadata.meta;
+            inherit (metadata) meta;
           };
           default = fmt;
 
           tag-release = {
             type = "app";
             program = "${pkgs.lib.getExe packages.tag-release}";
-            meta = metadata.meta;
+            meta = metadata.meta // {
+              pname = "tag-release";
+              name = "${pname}-${version}";
+            };
+
           };
         };
 
@@ -237,7 +241,7 @@
 
             buildInputs = darwinOnlyBuildInputs;
 
-            GREETING = "Starting nix develop shell...";
+            GREETING = "Starting nix develop shell for ${name}...";
 
             shellHook = ''
               ${pkgs.lib.getExe pkgs.cowsay} "$GREETING"
