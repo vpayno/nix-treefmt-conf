@@ -24,9 +24,7 @@
     ruff-format.enable = false; # in pyfmt
     rustfmt.enable = true; # rust
     shellcheck.enable = true; # shell
-    shfmt = {
-      enable = true; # shell
-    };
+    shfmt.enable = false; # shell, use shellfmt
     taplo.enable = true; # toml
   };
 
@@ -127,14 +125,28 @@
           "*.pyi"
         ];
       };
-      shfmt = {
+      shellfmt = {
         args = [
-          "--indent"
-          "0" # 0 for tabs
-          "--case-indent"
-          "--space-redirects"
-          "--keep-padding"
-          "--write"
+        ];
+        command = pkgs.writeShellApplication {
+          name = "shellfmt";
+          runtimeInputs = with pkgs; [
+            shfmt
+          ];
+          text = ''
+            shfmt_args="--indent=0 --case-indent --space-redirects --keep-padding --write"
+            printf "Running %s\n" "shfmt $shfmt_args $*"
+            # shellcheck disable=SC2086
+            shfmt $shfmt_args "$@"
+            printf "\n"
+          '';
+        };
+        includes = [
+          "*.sh"
+          "*.bash"
+          "*.ebuild"
+          "*.envrc"
+          "*.envrc.*"
         ];
       };
       taplo = {
