@@ -33,6 +33,8 @@
       excludes = [
         "LICENSE"
         "devbox.json" # jsonfmt keeps re-including it
+        ".devbox/*"
+        ".venv/*"
       ];
     };
     formatter = {
@@ -123,6 +125,9 @@
         includes = [
           "*.py"
           "*.pyi"
+        ];
+        excludes = [
+          ".venv/*"
         ];
       };
       shellfmt = {
