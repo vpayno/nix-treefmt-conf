@@ -114,7 +114,7 @@
             isort $isort_args "$@"
             printf "\n"
 
-            ruff_args="--line-length=240"
+            ruff_args="--line-length=120"
             printf "Running %s\n" "ruff format $ruff_args $*"
             ruff format $ruff_args "$@"
             printf "\n"
