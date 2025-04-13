@@ -22,7 +22,7 @@
       system:
       let
         pname = "nix-treefmt-conf";
-        version = "v0.3.2";
+        version = "0.3.2";
         name = "${pname}-${version}";
 
         pkgs = nixpkgs.legacyPackages.${system};
@@ -129,14 +129,14 @@
 
                 if [[ -z $version ]] || [[ -z $note ]]; then
                   printf "\n"
-                  printf "Usage: nix run github:vpayno/nix-treefmt-conf#tag-release -- %s \"%s\"\n" v1.2.3 "fixed blah blah"
+                  printf "Usage: nix run github:vpayno/nix-treefmt-conf#tag-release -- %s \"%s\"\n" 1.2.3 "fixed blah blah"
                   printf "\n"
                   exit 1
                 fi
 
-                if [[ ! $version =~ ^v[0-9]+[.][0-9]+[.][0-9]+$ ]]; then
+                if [[ ! $version =~ ^[0-9]+[.][0-9]+[.][0-9]+$ ]]; then
                   printf "\n"
-                  printf "ERROR: version string \"%s\" doesn't match the format \"^v[0-9]+[.][0-9]+[.][0-9]+$\"\n" "$version"
+                  printf "ERROR: version string \"%s\" doesn't match the format \"^[0-9]+[.][0-9]+[.][0-9]+$\"\n" "$version"
                   printf "\n"
                   exit 1
                 fi
@@ -168,7 +168,8 @@
                 printf "\n"
 
                 # flake.nix:        version = "v0.1.5";
-                sed -r -i -e "s/^( +version = \")v[0-9]+.[0-9]+.[0-9]+(\")/\1$version\2/g" ./flake.nix
+                # flake.nix:        version = "0.1.5";
+                sed -r -i -e "s/^( +version = \")v?[0-9]+.[0-9]+.[0-9]+(\")/\1$version\2/g" ./flake.nix
                 printf "\n"
 
                 git add ./flake.nix
