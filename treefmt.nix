@@ -4,6 +4,11 @@
   scripts,
   ...
 }:
+let
+  data = {
+    lineLength = 80;
+  };
+in
 {
   # Used to find the project root
   projectRootFile = "flake.nix";
@@ -14,12 +19,13 @@
     alejandra.enable = false; # using nixfmt
     black.enable = false; # using ruff-format in pyfmt
     cmake-format.enable = true; # cmake
-    deno.enable = true; # markdown
-    goimports.enable = false; # in goformatter wrapper
-    gofumpt.enable = false; # in goformatter wrapper
+    deno.enable = true; # web, md, json, yaml
     gofmt.enable = false; # in goformatter wrapper
+    gofumpt.enable = false; # in goformatter wrapper
+    goimports.enable = false; # in goformatter wrapper
     isort.enable = false; # in pyfmt wrapper
     jsonfmt.enable = true; # json
+    mdformat.enable = true;
     nixfmt.enable = true; # nixfmt-rfc-style is now the default for the 'nix fmt' formatter
     ruff-check.enable = true; # python linter
     ruff-format.enable = false; # in pyfmt
@@ -51,6 +57,7 @@
           "vedor/*"
         ];
       };
+
       gomodtidy = {
         args = [
         ];
@@ -62,11 +69,19 @@
           "*go.work.sum"
         ];
       };
+
       jsonfmt = {
         excludes = [
           "devbox.json"
         ];
       };
+
+      mdformat = {
+        end-of-line = "lf";
+        number = true;
+        wrap = data.lineLength; # length, keep, no
+      };
+
       pyfmt = {
         args = [
         ];
@@ -79,6 +94,7 @@
           ".venv/*"
         ];
       };
+
       shellfmt = {
         args = [
         ];
@@ -91,6 +107,7 @@
           "*.envrc.*"
         ];
       };
+
       taplo = {
         includes = [
           ".editorconfig"
