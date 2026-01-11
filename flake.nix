@@ -196,11 +196,13 @@
             name = scriptMetadata.tagRelease.pname;
             runtimeInputs = with pkgs; [
               coreutils
+              deno
               git
               git-cliff
               gnugrep
               gnused
               gum
+              mdformat
             ];
             text = builtins.readFile ./resources/scripts/tag-release.bash;
             meta = scriptMetadata.tagRelease;

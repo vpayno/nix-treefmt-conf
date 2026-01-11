@@ -70,6 +70,8 @@ git add ./flake.nix
 printf "\n"
 
 git-cliff --tag="${version}" --output=CHANGELOG.md
+deno fmt ./CHANGELOG.md
+mdformat --wrap=120 --end-of-line='lf' --number CHANGELOG.md
 git add ./CHANGELOG.md
 printf "\n"
 
