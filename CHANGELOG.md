@@ -2,20 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2026-01-11
+
+### Nix
+
+- _(tag-release)_ Format/fix change log
+
+### Treefmt
+
+- _(md)_ Add mdformat settings
+
 ## [0.4.0] - 2026-01-11
 
 ### Nix
 
-- *(shell)* Add tag-release script to devshell
-- *(treefmt)* Move scripts to files
-- *(refactor)* Move scripts set from treefmt.nix to flake.nix
-- *(refactor)* Add scripts to packages and apps outputs
-- *(refactor)* Move tag-release script to a file
-- *(apps)* Fix app generation function
+- _(shell)_ Add tag-release script to devshell
+- _(treefmt)_ Move scripts to files
+- _(refactor)_ Move scripts set from treefmt.nix to flake.nix
+- _(refactor)_ Add scripts to packages and apps outputs
+- _(refactor)_ Move tag-release script to a file
+- _(apps)_ Fix app generation function
 
 ### Miscellaneous Tasks
 
-- *(git)* Add .direnv to .gitignore
+- _(git)_ Add .direnv to .gitignore
 
 ## [0.3.4] - 2026-01-11
 
@@ -64,7 +74,7 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- *(style)* Clean up .gitignore file
+- _(style)_ Clean up .gitignore file
 
 ## [0.3.1] - 2025-03-16
 
