@@ -3,6 +3,45 @@
   pkgs,
   ...
 }:
+let
+  scripts = {
+    goformatter = pkgs.writeShellApplication {
+      name = "goformatter";
+      runtimeInputs = with pkgs; [
+        go
+        goimports-reviser
+        golines
+        gofumpt
+      ];
+      text = builtins.readFile ./resources/scripts/goformatter.bash;
+    };
+
+    gomodtidy = pkgs.writeShellApplication {
+      name = "go-mod-tidy";
+      runtimeInputs = with pkgs; [
+        go
+      ];
+      text = builtins.readFile ./resources/scripts/gomodtidy.bash;
+    };
+
+    pyformatter = pkgs.writeShellApplication {
+      name = "pyfmt";
+      runtimeInputs = with pkgs; [
+        isort
+        ruff
+      ];
+      text = builtins.readFile ./resources/scripts/pyformatter.bash;
+    };
+
+    shformatter = pkgs.writeShellApplication {
+      name = "shellfmt";
+      runtimeInputs = with pkgs; [
+        shfmt
+      ];
+      text = builtins.readFile ./resources/scripts/shformatter.bash;
+    };
+  };
+in
 {
   # Used to find the project root
   projectRootFile = "flake.nix";
@@ -42,31 +81,7 @@
         args = [
           "-w"
         ];
-        command = pkgs.writeShellApplication {
-          name = "goformatter";
-          runtimeInputs = with pkgs; [
-            goimports-reviser
-            golines
-            gofumpt
-          ];
-          text = ''
-            printf "Running %s\n" "gofmt $*"
-            ${pkgs.go}/bin/gofmt "$@"
-            printf "\n"
-
-            printf "Running %s\n" "goimports-reviser $*"
-            goimports-reviser "$@"
-            printf "\n"
-
-            printf "Running %s\n" "golines $*"
-            golines "$@"
-            printf "\n"
-
-            printf "Running %s\n" "gofumpt $*"
-            gofumpt "$@"
-            printf "\n"
-          '';
-        };
+        command = "${pkgs.lib.getExe scripts.goformatter}";
         includes = [
           "*.go"
         ];
@@ -77,17 +92,7 @@
       gomodtidy = {
         args = [
         ];
-        command = pkgs.writeShellApplication {
-          name = "go-mod-tidy";
-          runtimeInputs = with pkgs; [
-            go
-          ];
-          text = ''
-            printf "Running %s\n" "go mod tidy"
-            go mod tidy
-            printf "\n"
-          '';
-        };
+        command = "${pkgs.lib.getExe scripts.gomodtidy}";
         includes = [
           "*go.mod"
           "*go.sum"
@@ -103,25 +108,7 @@
       pyfmt = {
         args = [
         ];
-        command = pkgs.writeShellApplication {
-          name = "pyfmt";
-          runtimeInputs = with pkgs; [
-            isort
-            ruff
-          ];
-          text = ''
-            isort_args="--profile black --multi-line 3 --wrap-length 10 --line-length 11 --dont-follow-links --ensure-newline-before-comments"
-            printf "Running %s\n" "isort $isort_args $*"
-            # shellcheck disable=SC2086
-            isort $isort_args "$@"
-            printf "\n"
-
-            ruff_args="--line-length=120"
-            printf "Running %s\n" "ruff format $ruff_args $*"
-            ruff format $ruff_args "$@"
-            printf "\n"
-          '';
-        };
+        command = "${pkgs.lib.getExe scripts.pyformatter}";
         includes = [
           "*.py"
           "*.pyi"
@@ -133,19 +120,7 @@
       shellfmt = {
         args = [
         ];
-        command = pkgs.writeShellApplication {
-          name = "shellfmt";
-          runtimeInputs = with pkgs; [
-            shfmt
-          ];
-          text = ''
-            shfmt_args="--indent=0 --case-indent --space-redirects --keep-padding --write"
-            printf "Running %s\n" "shfmt $shfmt_args $*"
-            # shellcheck disable=SC2086
-            shfmt $shfmt_args "$@"
-            printf "\n"
-          '';
-        };
+        command = "${pkgs.lib.getExe scripts.shformatter}";
         includes = [
           "*.sh"
           "*.bash"
