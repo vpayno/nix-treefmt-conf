@@ -43,7 +43,7 @@
         args = [
           "-w"
         ];
-        command = "${pkgs.lib.getExe scripts.goformatter}";
+        command = "${pkgs.lib.getExe scripts.goFormatter}";
         includes = [
           "*.go"
         ];
@@ -54,7 +54,7 @@
       gomodtidy = {
         args = [
         ];
-        command = "${pkgs.lib.getExe scripts.gomodtidy}";
+        command = "${pkgs.lib.getExe scripts.goModTidy}";
         includes = [
           "*go.mod"
           "*go.sum"
@@ -70,7 +70,7 @@
       pyfmt = {
         args = [
         ];
-        command = "${pkgs.lib.getExe scripts.pyformatter}";
+        command = "${pkgs.lib.getExe scripts.pyFormatter}";
         includes = [
           "*.py"
           "*.pyi"
@@ -82,7 +82,7 @@
       shellfmt = {
         args = [
         ];
-        command = "${pkgs.lib.getExe scripts.shformatter}";
+        command = "${pkgs.lib.getExe scripts.shFormatter}";
         includes = [
           "*.sh"
           "*.bash"

@@ -84,9 +84,114 @@
           };
         };
 
+        usageMessagePre = ''
+          Available ${name} flake commands:
+
+            nix run .#flakeShowUsage | .#default     # this message
+        '';
+
+        generatePackagesFromScripts = pkgs.lib.mapAttrs (
+          name: _:
+          scripts."${name}"
+          // {
+            inherit (scriptMetadata."${name}") pname;
+            inherit version;
+            name = "${self.packages.${system}."${name}".pname}-${self.packages.${system}."${name}".version}";
+          }
+        ) scripts;
+
+        generateAppsFromScripts = pkgs.lib.mapAttrs (
+          name: _:
+          scripts."${name}"
+          // {
+            type = "app";
+            name = "${self.packages.${system}.${name}.pname}";
+            inherit (self.packages.${system}.${name}) meta;
+            program = "${pkgs.lib.getExe self.packages.${system}.${name}}";
+          }
+        ) scripts;
+
+        scriptMetadata = {
+          flakeShowUsage = rec {
+            pname = "flake-show-usage";
+            inherit version;
+            name = "${pname}-${version}";
+            description = "Show Nix flake usage text";
+          };
+
+          goFormatter = rec {
+            pname = "goformatter";
+            inherit version;
+            name = "${pname}-${version}";
+            description = "Custom Golang formatter/linter";
+          };
+
+          goModTidy = rec {
+            pname = "gomodtidy";
+            inherit version;
+            name = "${pname}-${version}";
+            description = "Runs go mod tidy";
+          };
+
+          pyFormatter = rec {
+            pname = "pyformatter";
+            inherit version;
+            name = "${pname}-${version}";
+            description = "Custom Python formatter/linter";
+          };
+
+          shFormatter = rec {
+            pname = "shformatter";
+            inherit version;
+            name = "${pname}-${version}";
+            description = "Custom Shell formatter/linter";
+          };
+        };
+
         scripts = {
-          goformatter = pkgs.writeShellApplication {
-            name = "goformatter";
+          flakeShowUsage = pkgs.writeShellApplication {
+            name = scriptMetadata.flakeShowUsage.pname;
+            runtimeInputs = with pkgs; [
+              coreutils
+              jq
+              gnugrep
+              nix
+            ];
+            text = ''
+              declare json_text
+              declare -a commands
+              declare -a comments
+              declare -i i
+
+              printf "\n"
+              printf "%s" "${usageMessagePre}"
+              printf "\n"
+
+              json_text="$(nix flake show --json 2>/dev/null | jq --sort-keys .)"
+
+              mapfile -t commands < <(printf "%s" "$json_text" | jq -r --arg system "${system}" '.apps[$system] | to_entries[] | select(.key | test("^(default|flakeShowUsage)$") | not) | "\("nix run .#")\(.key)"')
+              mapfile -t comments < <(printf "%s" "$json_text" | jq -r --arg system "${system}" '.apps[$system] | to_entries[] | select(.key | test("^(default|flakeShowUsage)$") | not) | "\("# ")\(.value.description)"')
+
+              for ((i = 0; i < ''${#commands[@]}; i++)); do
+                printf "  %-40s %s\n" "''${commands[$i]}" "''${comments[$i]}"
+              done
+
+              printf "\n"
+
+              mapfile -t commands < <(printf "%s" "$json_text" | jq -r --arg system "${system}" '.devShells[$system] | to_entries[] | "\("nix develop .#")\(.key)"')
+              mapfile -t comments < <(printf "%s" "$json_text" | jq -r --arg system "${system}" '.devShells[$system] | to_entries[] | "\("# ")\(.value.name)"')
+
+              for ((i = 0; i < ''${#commands[@]}; i++)); do
+                printf "  %-40s %s\n" "''${commands[$i]}" "''${comments[$i]}"
+              done
+
+              printf "\n"
+            '';
+            meta = scriptMetadata.flakeShowUsage;
+          };
+
+          goFormatter = pkgs.writeShellApplication {
+            name = scriptMetadata.goFormatter.pname;
             runtimeInputs = with pkgs; [
               go
               goimports-reviser
@@ -94,31 +199,35 @@
               gofumpt
             ];
             text = builtins.readFile ./resources/scripts/goformatter.bash;
+            meta = scriptMetadata.goFormatter;
           };
 
-          gomodtidy = pkgs.writeShellApplication {
-            name = "go-mod-tidy";
+          goModTidy = pkgs.writeShellApplication {
+            name = scriptMetadata.goModTidy.pname;
             runtimeInputs = with pkgs; [
               go
             ];
             text = builtins.readFile ./resources/scripts/gomodtidy.bash;
+            meta = scriptMetadata.goModTidy;
           };
 
-          pyformatter = pkgs.writeShellApplication {
-            name = "pyfmt";
+          pyFormatter = pkgs.writeShellApplication {
+            name = scriptMetadata.pyFormatter.pname;
             runtimeInputs = with pkgs; [
               isort
               ruff
             ];
             text = builtins.readFile ./resources/scripts/pyformatter.bash;
+            meta = scriptMetadata.pyFormatter;
           };
 
-          shformatter = pkgs.writeShellApplication {
-            name = "shellfmt";
+          shFormatter = pkgs.writeShellApplication {
+            name = scriptMetadata.shFormatter.pname;
             runtimeInputs = with pkgs; [
               shfmt
             ];
             text = builtins.readFile ./resources/scripts/shformatter.bash;
+            meta = scriptMetadata.shFormatter;
           };
         };
       in
@@ -258,15 +367,17 @@
                 mainProgram = "tag-release";
               };
             };
-        };
+        }
+        // generatePackagesFromScripts;
 
         apps = rec {
+          default = self.apps.${system}.flakeShowUsage;
+
           fmt = {
             type = "app";
-            program = "${pkgs.lib.getExe packages.default}";
+            program = "${pkgs.lib.getExe packages.fmt}";
             inherit (metadata) meta;
           };
-          default = fmt;
 
           tag-release = {
             type = "app";
@@ -275,9 +386,9 @@
               pname = "tag-release";
               name = "${pname}-${version}";
             };
-
           };
-        };
+        }
+        // generateAppsFromScripts;
 
         devShells = {
           default = pkgs.mkShell {
