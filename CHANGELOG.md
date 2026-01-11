@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.4] - 2026-01-11
+
+### Nix
+
+- Use my systems context repo
+- Update locks
+- Update locks
+- Lock update
+- Lock update
+
+### Other
+
+- Add .envrc file version 20251210.0.0
+
 ## [0.3.3] - 2025-04-13
 
 ### Bug Fixes
