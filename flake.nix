@@ -27,7 +27,7 @@
       system:
       let
         pname = "nix-treefmt-conf";
-        version = "0.3.4";
+        version = "0.4.0";
         name = "${pname}-${version}";
 
         pkgs = nixpkgs.legacyPackages.${system};

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-01-11
+
+### Nix
+
+- *(shell)* Add tag-release script to devshell
+- *(treefmt)* Move scripts to files
+- *(refactor)* Move scripts set from treefmt.nix to flake.nix
+- *(refactor)* Add scripts to packages and apps outputs
+- *(refactor)* Move tag-release script to a file
+- *(apps)* Fix app generation function
+
+### Miscellaneous Tasks
+
+- *(git)* Add .direnv to .gitignore
+
 ## [0.3.4] - 2026-01-11
 
 ### Nix
