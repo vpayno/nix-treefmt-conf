@@ -1,47 +1,9 @@
 # treefmt.nix
 {
   pkgs,
+  scripts,
   ...
 }:
-let
-  scripts = {
-    goformatter = pkgs.writeShellApplication {
-      name = "goformatter";
-      runtimeInputs = with pkgs; [
-        go
-        goimports-reviser
-        golines
-        gofumpt
-      ];
-      text = builtins.readFile ./resources/scripts/goformatter.bash;
-    };
-
-    gomodtidy = pkgs.writeShellApplication {
-      name = "go-mod-tidy";
-      runtimeInputs = with pkgs; [
-        go
-      ];
-      text = builtins.readFile ./resources/scripts/gomodtidy.bash;
-    };
-
-    pyformatter = pkgs.writeShellApplication {
-      name = "pyfmt";
-      runtimeInputs = with pkgs; [
-        isort
-        ruff
-      ];
-      text = builtins.readFile ./resources/scripts/pyformatter.bash;
-    };
-
-    shformatter = pkgs.writeShellApplication {
-      name = "shellfmt";
-      runtimeInputs = with pkgs; [
-        shfmt
-      ];
-      text = builtins.readFile ./resources/scripts/shformatter.bash;
-    };
-  };
-in
 {
   # Used to find the project root
   projectRootFile = "flake.nix";
