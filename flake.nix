@@ -243,6 +243,7 @@
               commonPkgs
               ++ (with packages; [
                 fmt
+                tag-release
               ]);
 
             buildInputs = darwinOnlyBuildInputs;
