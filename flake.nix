@@ -100,16 +100,11 @@
           }
         ) scripts;
 
-        generateAppsFromScripts = pkgs.lib.mapAttrs (
-          name: _:
-          scripts."${name}"
-          // {
-            type = "app";
-            name = "${self.packages.${system}.${name}.pname}";
-            inherit (self.packages.${system}.${name}) meta;
-            program = "${pkgs.lib.getExe self.packages.${system}.${name}}";
-          }
-        ) scripts;
+        generateAppsFromScripts = pkgs.lib.mapAttrs (name: _: {
+          type = "app";
+          program = "${pkgs.lib.getExe self.packages.${system}.${name}}";
+          inherit (self.packages.${system}.${name}) meta;
+        }) scripts;
 
         scriptMetadata = {
           flakeShowUsage = rec {
