@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.2] - 2026-03-28
+
+### Nix
+
+- Lock update
+- _(shfmt)_ Clean up
+
+### Other
+
+- Bump .envrc to version 20250131.0.0
+- Bump .envrc to version 20250131.0.0
+- Bump .envrc to v20260221.0.2
+- Bump .envrc to v20260315.0.1
+
 ## [0.4.1] - 2026-01-11
 
 ### Nix
