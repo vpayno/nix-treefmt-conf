@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.3] - 2026-07-04
+
+### Nix
+
+- Lock update
+
+### Other
+
+- Bump .envrc to v20260703.0.0
+
 ## [0.4.2] - 2026-03-28
 
 ### Nix
