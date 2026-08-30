@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.4] - 2026-08-30
+
+### Nix
+
+- Lock update
+- Lock update
+- Stdenv.isDarwin -> stdenv.hostPlatform.isDarwin
+- Lock update
+
 ## [0.4.3] - 2026-07-04
 
 ### Nix
