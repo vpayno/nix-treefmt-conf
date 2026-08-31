@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.5] - 2026-08-31
+
+### Nix
+
+- Add bundle package of fmt tools
+
 ## [0.4.4] - 2026-08-30
 
 ### Nix
