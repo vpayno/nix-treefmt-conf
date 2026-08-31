@@ -248,6 +248,37 @@
             meta = scriptMetadata.shFormatter;
           };
         };
+
+        toolScripts = pkgs.lib.mapAttrsToList (name: _: scripts."${name}") scripts;
+
+        toolBundle = pkgs.buildEnv {
+          name = "${name}-bundle";
+          paths = toolScripts;
+          nativeBuildInputs = with pkgs; [
+            makeWrapper
+          ];
+          pathsToLink = [
+            "/bin"
+            "/etc"
+          ];
+          postBuild = ''
+            extra_bin_paths="${pkgs.lib.makeBinPath toolScripts}"
+            printf "Adding extra bin paths to wrapper scripts: %s\n" "$extra_bin_paths"
+            printf "\n"
+
+            for p in "$out"/bin/*; do
+              if [[ ! -x $p ]]; then
+                continue
+              fi
+              if [[ $p =~ /(flake-show-usage|tag-release)$ ]]; then
+                rm -fv $p
+                continue
+              fi
+              # echo wrapProgram "$p" --set PATH "$extra_bin_paths"
+              # wrapProgram "$p" --set PATH "$extra_bin_paths"
+            done
+          '';
+        };
       in
       rec {
         formatter = treefmtEval.config.build.wrapper;
@@ -267,6 +298,7 @@
             };
 
           default = fmt;
+          bundle = toolBundle;
         }
         // generatePackagesFromScripts;
 
