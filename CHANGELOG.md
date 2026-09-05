@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.6] - 2026-09-05
+
+### Nix
+
+- _(apps)_ Add codeownersFormatter
+- Lock update
+
 ## [0.4.5] - 2026-08-31
 
 ### Nix
