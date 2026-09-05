@@ -148,6 +148,13 @@
             name = "${pname}-${version}";
             description = "Custom Shell formatter/linter";
           };
+
+          codeownersFormatter = rec {
+            pname = "shformatter";
+            inherit version;
+            name = "${pname}-${version}";
+            description = "Custom CODEOWNERS formatter";
+          };
         };
 
         scripts = {
@@ -246,6 +253,17 @@
             ];
             text = builtins.readFile ./resources/scripts/shformatter.bash;
             meta = scriptMetadata.shFormatter;
+          };
+
+          codeownersFormatter = pkgs.writeShellApplication {
+            name = scriptMetadata.codeownersFormatter.pname;
+            runtimeInputs = with pkgs; [
+              python3
+            ];
+            text = ''
+              exec -a "$0" python ${./resources/scripts/codeowners_fmt.py} "$@"
+            '';
+            meta = scriptMetadata.codeownersFormatter;
           };
         };
 
