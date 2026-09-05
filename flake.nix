@@ -150,7 +150,7 @@
           };
 
           codeownersFormatter = rec {
-            pname = "shformatter";
+            pname = "codeowners-fmt";
             inherit version;
             name = "${pname}-${version}";
             description = "Custom CODEOWNERS formatter";
@@ -258,13 +258,22 @@
           codeownersFormatter = pkgs.writeShellApplication {
             name = scriptMetadata.codeownersFormatter.pname;
             runtimeInputs = with pkgs; [
-              python3
             ];
             text = ''
-              exec -a "$0" python ${./resources/scripts/codeowners_fmt.py} "$@"
+              exec ${pkgs.lib.getExe pythonEnvs.codeownersFormatter} ${./resources/scripts/codeowners_fmt.py} "$@"
             '';
             meta = scriptMetadata.codeownersFormatter;
           };
+        };
+
+        pythonEnvs = {
+          codeownersFormatter = (
+            pkgs.python3.withPackages (
+              python-pkgs: with python-pkgs; [
+                rich
+              ]
+            )
+          );
         };
 
         toolScripts = pkgs.lib.mapAttrsToList (name: _: scripts."${name}") scripts;

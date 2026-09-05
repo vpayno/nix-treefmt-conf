@@ -12,23 +12,11 @@ import argparse
 import sys
 from typing import TextIO
 
+from rich.traceback import install
+
 # import vim
 
-parser: argparse.ArgumentParser = argparse.ArgumentParser(
-    prog="fmt-codeowners",
-    description="CODEOWNERS formatter",
-)
-# "paths", default=[sys.stdin], type=argparse.FileType("r"), nargs="*"
-# paths: list[TextIO | str]
-_ = parser.add_argument(
-    "paths",
-    default=[sys.stdin],
-    type=str,
-    nargs="*",
-)
-args: argparse.Namespace = parser.parse_args()
-
-stdin_mode: bool = False
+_ = install()  # setup rich
 
 
 def format_buffer(old_buffer: TextIO | list[str]) -> list[str]:
@@ -75,25 +63,47 @@ def format_buffer(old_buffer: TextIO | list[str]) -> list[str]:
     return new_buffer
 
 
-for filename in args.paths:
-    if filename in [sys.stdin, "-"]:
-        stdin_mode = True
-        break
+def main() -> None:
+    """Runs the cli code."""
+    stdin_mode: bool = False
 
-buffer_line: str
-
-if stdin_mode:
-    buffer_final = format_buffer(sys.stdin)
-    for buffer_line in buffer_final:
-        print(buffer_line, end="\n")
-else:
-    buffer_prev: list[str] = []
-    buffer_final: list[str] = []
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(
+        prog="fmt-codeowners",
+        description="CODEOWNERS formatter",
+    )
+    # "paths", default=[sys.stdin], type=argparse.FileType("r"), nargs="*"
+    # paths: list[TextIO | str]
+    _ = parser.add_argument(
+        "paths",
+        default=[sys.stdin],
+        type=str,
+        nargs="*",
+    )
+    args: argparse.Namespace = parser.parse_args()
 
     for filename in args.paths:
-        with open(filename, mode="r", encoding="utf-8") as f:
-            buffer_prev = f.readlines()
-            buffer_final = format_buffer(buffer_prev)
+        if filename in [sys.stdin, "-"]:
+            stdin_mode = True
+            break
 
-        with open(filename, mode="w", encoding="utf-8") as f:
-            f.writelines([line + "\n" for line in buffer_final])
+    buffer_line: str
+
+    if stdin_mode:
+        buffer_final = format_buffer(sys.stdin)
+        for buffer_line in buffer_final:
+            print(buffer_line, end="\n")
+    else:
+        buffer_prev: list[str] = []
+        buffer_final: list[str] = []
+
+        for filename in args.paths:
+            with open(filename, mode="r", encoding="utf-8") as f:
+                buffer_prev = f.readlines()
+                buffer_final = format_buffer(buffer_prev)
+
+            with open(filename, mode="w", encoding="utf-8") as f:
+                f.writelines([line + "\n" for line in buffer_final])
+
+
+if __name__ == "__main__":  # pragma: no cover
+    main()
